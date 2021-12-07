@@ -7,13 +7,13 @@ on:
   push:
     branches: [ api-trips ]
     paths: 
-    - apis/trips/
-    - '!apis/trips/**.md'
+      - 'apis/trips/**'
+      - '!apis/trips/**.md'
   pull_request:
     branches: [ api-trips ]
     paths: 
-    - apis/trips/
-    - '!apis/trips/**.md'
+      - 'apis/trips/**'
+      - '!apis/trips/**.md'      
 
 jobs:  
   build:  
