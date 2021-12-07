@@ -5,7 +5,7 @@
 
 POI (Trip Points of Interest) - CRUD API written in .Net Core 3.1 for points of interest on trips
 
-## Build the Application
+## Build the Application -YA -does this work?
 
 ```shell
 dotnet build .
