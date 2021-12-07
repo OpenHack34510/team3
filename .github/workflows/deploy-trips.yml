@@ -7,29 +7,29 @@ on:
   workflow_dispatch:
   push:
     #branches: [ api-trips ]
-          
-jobs:  
-  test:  
-    runs-on: ubuntu-latest  
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2    
+    - uses: actions/checkout@v2
 
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
-        
+
     - name: download dependencies
       run: go get
-      working-directory: ${{env.workingdir}}
-      
+      working-directory: ${{ env.workingdir }}
+
     - name: Test
-      run: go test ./tripsgo -run Unit     
-      working-directory: ${{env.workingdir}}    
-    
+      run: go test ./tripsgo -run Unit
+      working-directory: ${{ env.workingdir }}
+
   acr:
-    runs-on: ubuntu-latest  
-    needs: 
+    runs-on: ubuntu-latest
+    needs:
     - test
     steps:
     - name: ACR build
@@ -42,4 +42,4 @@ jobs:
         registry: ${{ secrets.registry }}
         repository: ${{ secrets.repository }}
         image: api-trips
-        folder: ${{env.workingdir}}
+        folder: ${{ env.workingdir }}/
