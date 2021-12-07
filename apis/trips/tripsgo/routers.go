@@ -16,7 +16,7 @@ var (
 	wsbu = flag.String("wsbu", getEnv("WEB_SERVER_BASE_URI", "changeme"), "base portion of server uri")
 )
 
-// Route - object representing a route handler
+// Route - object representing a route handler correctly
 type Route struct {
 	Name        string
 	Method      string
