@@ -29,17 +29,19 @@ jobs:
       run: go test ./tripsgo -run Unit     
       working-directory: ${{env.workingdir}}    
     
-    acr:
-      runs-on: ubuntu-latest  
-      - name: ACR build
-          id: acr
-          uses: azure/acr-build@v1
-          with:
-            service_principal: ${{ secrets.service_principal }}
-            service_principal_password: ${{ secrets.service_principal_password }}
-            tenant: ${{ secrets.tenant }}
-            registry: ${{ secrets.registry }}
-            repository: ${{ secrets.repository }}
-            image: api-trips
-            folder: ${{env.workingdir}}
-    
+  acr:
+    runs-on: ubuntu-latest  
+    needs: 
+    - test
+    steps:
+    - name: ACR build
+      id: acr
+      uses: azure/acr-build@v1
+      with:
+        service_principal: ${{ secrets.service_principal }}
+        service_principal_password: ${{ secrets.service_principal_password }}
+        tenant: ${{ secrets.tenant }}
+        registry: ${{ secrets.registry }}
+        repository: ${{ secrets.repository }}
+        image: api-trips
+        folder: ${{env.workingdir}}
