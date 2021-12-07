@@ -31,8 +31,6 @@ jobs:
       run: go get
       working-directory: ${{env.workingdir}}
       
-    - run: exit 1
-      
     - name: Test
       run: go test ./tripsgo -run Unit     
       working-directory: ${{env.workingdir}}
