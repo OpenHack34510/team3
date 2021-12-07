@@ -32,14 +32,23 @@ jobs:
     needs:
       - test
     steps:
-      - name: ACR build
-        id: acr
-        uses: azure/acr-build@v1
+      - uses: actions/checkout@v2
+
+      # - name: ACR build
+      #   id: acr
+      #   uses: azure/acr-build@v1
+      #   with:
+      #     service_principal: ${{ secrets.service_principal }}
+      #     service_principal_password: ${{ secrets.service_principal_password }}
+      #     tenant: ${{ secrets.tenant }}
+      #     registry: ${{ secrets.registry }}
+      #     repository: ${{ secrets.repository }}
+      #     image: api-trips
+      #     folder: ${{ env.workingdir }}
+
+      - name: Login to ACR
+        uses: docker/login-action@v1
         with:
-          service_principal: ${{ secrets.service_principal }}
-          service_principal_password: ${{ secrets.service_principal_password }}
-          tenant: ${{ secrets.tenant }}
-          registry: ${{ secrets.registry }}
-          repository: ${{ secrets.repository }}
-          image: api-trips
-          folder: ${{ env.workingdir }}
+          registry: ${{ secrets.registry }}.azurecr.io
+          username: ${{ secrets.service_principal }}
+          password: ${{ secrets.service_principal_password }}
