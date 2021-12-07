@@ -21,7 +21,7 @@ jobs:
         go-version: 1.17
         
     - name: download dependencies
-      run: go mod download
+      run: go get
       working-directory: ${{env.workingdir}}
       
     - name: Test
