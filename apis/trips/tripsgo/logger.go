@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//
+// declaring vars
 var (
 	Info  *log.Logger
 	Debug *log.Logger
