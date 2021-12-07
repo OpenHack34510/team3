@@ -1,4 +1,4 @@
-/apis/poi/ @aws-sujith
-/apis/trips/ @harshsaki4
-/apis/user-java/ @deepum-kapil
-/apis/userprofile/ @weisdd
+**/apis/poi/ @aws-sujith
+**/apis/trips/ @harshsaki4
+**/apis/user-java/ @deepum-kapil
+**/apis/userprofile/ @weisdd
