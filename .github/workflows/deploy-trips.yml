@@ -4,12 +4,10 @@ env:
   workingdir: apis/trips/
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ api-trips ]
-    paths: 
-      - 'apis/trips/**'
-      - '!apis/trips/**.md'
-      
+    #branches: [ api-trips ]
+          
 jobs:  
   test:  
     runs-on: ubuntu-latest  
