@@ -4,7 +4,7 @@ env:
   workingdir: apis/trips/
   repo: devopsoh/api-trips
   context: apis/trips
-  AZURE_WEBAPP_NAME: openhack5ba15au8poi
+  AZURE_WEBAPP_NAME: openhack5ba15au8trips
 
 on:
   workflow_dispatch:

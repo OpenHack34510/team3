@@ -4,7 +4,7 @@ env:
   workingdir: apis/user-java/
   repo: devopsoh/api-user-java
   context: apis/user-java/
-  AZURE_WEBAPP_NAME: openhack5ba15au8poi
+  AZURE_WEBAPP_NAME: openhack5ba15au8userjava
 
 on:
   workflow_dispatch:
