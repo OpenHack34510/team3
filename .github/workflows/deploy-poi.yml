@@ -41,7 +41,7 @@ jobs:
          context: ${{ env.context }}
          repo: ${{ env.repo }}
          registry: ${{ secrets.registry }}
-         username: ${{ secrets.service_principal }}
-         password: ${{ secrets.service_principal_password }}
+         service_principal: ${{ secrets.service_principal }}
+         service_principal_password: ${{ secrets.service_principal_password }}
          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
          AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
