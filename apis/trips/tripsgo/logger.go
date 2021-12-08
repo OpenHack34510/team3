@@ -15,7 +15,7 @@ var (
 	Fatal *log.Logger
 )
 
-// InitLogging - Initialize logging for trips api
+// InitLogging - Initialize logging for trips api - yay
 func InitLogging(
 	infoHandle io.Writer,
 	debugHandle io.Writer,
