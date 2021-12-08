@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
   push:
     #branches: [ main ]
-    #paths: 
+    #paths:
     #  - 'apis/poi/**'
-    #  - '!apis/poi/**.md' 
+    #  - '!apis/poi/**.md'
 
 jobs:
   test:
@@ -27,41 +27,21 @@ jobs:
       run: dotnet restore
       working-directory: ${{ env.workingdir}}
     - name: Test
-      run: dotnet test ${{ env.workingdir}}/tests/UnitTests/      
+      run: dotnet test ${{ env.workingdir}}/tests/UnitTests/
 
-  acr:
+  deploy-acr-appservice:
     runs-on: ubuntu-latest
-    needs:
-      - test
+    #needs:
+    #  - test
     steps:
       - uses: actions/checkout@v2
- 
       - name: Login to ACR
-        uses: docker/login-action@v1
+        uses: .github/actions
         with:
-          registry: ${{ secrets.registry }}
-          username: ${{ secrets.service_principal }}
-          password: ${{ secrets.service_principal_password }}
-          
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          push: true
-          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
-  
-  build-and-deploy-to-appservice:
-    runs-on: ubuntu-latest
-    needs:
-      - acr
-    steps:
-    - name: Azure authentication
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: 'Deploy to Azure Web App for Container'
-      uses: azure/webapps-deploy@v2
-      with: 
-        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
-        images: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
+         context: ${{ env.context }}
+         repo: ${{ env.repo }}
+         registry: ${{ secrets.registry }}
+         username: ${{ secrets.service_principal }}
+         password: ${{ secrets.service_principal_password }}
+         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+         AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
