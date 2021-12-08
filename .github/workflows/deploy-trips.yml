@@ -49,6 +49,6 @@ jobs:
       - name: Login to ACR
         uses: docker/login-action@v1
         with:
-          registry: ${{ secrets.registry }}.azurecr.io
+          registry: ${{ secrets.registry }}
           username: ${{ secrets.service_principal }}
           password: ${{ secrets.service_principal_password }}
