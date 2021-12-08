@@ -5,18 +5,18 @@ var Mockgen = require('../mockgen.js');
  */
 module.exports = {
     /**
-     * summary: 
+     * summary:
      * description: Returns healthcheck for systems looking to ensure API is up and operational
-     * parameters: 
-     * produces: 
+     * parameters:
+     * produces:
      * responses: 200, default
-     * operationId: 
+     * operationId:
      */
     get: {
         200: function (req, res, callback) {
             res.json({
                 message: 'healthcheck',
-                status: 'healthy'
+                status: 'healthy. It is indeed!!'
             });
             callback;
         },
