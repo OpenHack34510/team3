@@ -9,10 +9,10 @@ env:
 on:
   workflow_dispatch:
   push:
-    #branches: [ main ]
-    #paths:
-    #  - 'apis/userprofile/**'
-    #  - '!apis/userprofile/**.md'
+    branches: [ main ]
+    paths:
+      - 'apis/userprofile/**'
+      - '!apis/userprofile/**.md'
 
 jobs:
   test:
