@@ -47,7 +47,7 @@ healthcheck() {
     echo $result
 }
 
-while [[ true ]]; do
+for n in 1..100 {
    result=`healthcheck $endpoint` 
    declare status
    if [[ -z $result ]]; then 
@@ -58,8 +58,12 @@ while [[ true ]]; do
    timestamp=$(date "+%Y%m%d-%H%M%S")
    if [[ -z $hasUrl ]]; then
      echo "$timestamp | $status "
+     if [[ $status == 0 ]]; then
+        exit 0
+     fi
    else
      echo "$timestamp | $status | $endpoint " 
    fi 
    sleep $duration
-done
+}
+exit 1
