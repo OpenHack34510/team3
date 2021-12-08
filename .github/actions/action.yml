@@ -54,7 +54,9 @@ runs:
         slot-name: staging
         
     - name: Verify the deployment status
-      run: ./.github/resources/polling.sh https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi
+      run:  |
+         chmod +x ./.github/resources/polling.sh https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi
+         ./.github/resources/polling.sh https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi
       shell: bash
       
     
