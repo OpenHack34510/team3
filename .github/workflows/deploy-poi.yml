@@ -35,7 +35,7 @@ jobs:
     #  - test
     steps:
       - uses: actions/checkout@v2
-      - name: Login to ACR
+      - name: Deploy to ACR and App Service
         uses: ./.github/actions
         with:
          context: ${{ env.context }}
