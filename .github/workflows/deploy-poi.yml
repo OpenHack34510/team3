@@ -3,7 +3,7 @@ name: deploy-poi
 env:
   workingdir: apis/poi/
   repo: devopsoh/api-poi
-  context: ${{ env.workingdir }}/web
+  context: apis/poi/web
 
 on:
   workflow_dispatch:
