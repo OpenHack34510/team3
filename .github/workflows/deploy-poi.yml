@@ -1,0 +1,51 @@
+name: deploy-poi
+
+env:
+  workingdir: apis/poi/
+  repo: devopsoh/api-poi
+  context: apis/poi/web
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ${{ env.workingdir}}
+    #- name: Build
+    #  run: dotnet build --no-restore
+    #  working-directory: ${{ env.workingdir}}
+    - name: Test
+      run: dotnet test ${{ env.workingdir}}/tests/UnitTests/      
+
+  acr:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - uses: actions/checkout@v2
+ 
+      - name: Login to ACR
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.registry }}
+          username: ${{ secrets.service_principal }}
+          password: ${{ secrets.service_principal_password }}
+          
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ env.context }}
+          push: true
+          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
