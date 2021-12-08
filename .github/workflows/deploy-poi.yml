@@ -8,10 +8,10 @@ env:
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
-    paths: 
-      - 'apis/poi/**'
-      - '!apis/poi/**.md' 
+    #branches: [ main ]
+    #paths: 
+    #  - 'apis/poi/**'
+    #  - '!apis/poi/**.md' 
 
 jobs:
   test:
@@ -52,3 +52,13 @@ jobs:
           context: ${{ env.context }}
           push: true
           tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
+  
+  build-and-deploy-to-appservice:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    #- uses: actions/checkout@master
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
