@@ -55,7 +55,7 @@ runs:
         
     - name: Verify the deployment status
       run:  |
-         chmod +x ./.github/resources/polling.sh https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi
+         chmod +x ./.github/resources/polling.sh
          ./.github/resources/polling.sh https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi
       shell: bash
       
