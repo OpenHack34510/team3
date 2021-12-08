@@ -20,6 +20,7 @@ jobs:
       with:
         node-version: 12.x
         cache: 'npm'
+        working-directory: ${{env.workingdir}}
     - run: npm ci
       working-directory: ${{env.workingdir}}
     - run: npm run build --if-present
