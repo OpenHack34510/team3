@@ -51,3 +51,4 @@ runs:
       with:
         app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
         images: ${{ inputs.registry }}/${{ inputs.repo }}:${{ github.sha }}
+        slot-name: staging
