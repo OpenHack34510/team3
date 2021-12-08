@@ -20,7 +20,7 @@ namespace poi
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public Startup(IConfiguration configuration) 
+        public Startup(IConfiguration configuration)
             => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
@@ -94,7 +94,7 @@ namespace poi
 
             var json = new JObject(
                 new JProperty("message", "POI Service Healthcheck"),
-                new JProperty("status", result.Status.ToString()));
+                new JProperty("status", result.Status.ToString() + "yipee"));
 
             return context.Response.WriteAsync(
                 json.ToString(Formatting.Indented));

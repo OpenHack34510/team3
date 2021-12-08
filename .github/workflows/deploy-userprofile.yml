@@ -4,16 +4,20 @@ env:
   workingdir: apis/userprofile/
   repo: devopsoh/api-userprofile
   context: apis/userprofile/
+  AZURE_WEBAPP_NAME: openhack5ba15au8userprofile
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
+    paths:
+      - 'apis/userprofile/**'
+      - '!apis/userprofile/**.md'
 
 jobs:
-  test:    
-    runs-on: ubuntu-latest    
-    steps:      
+  test:
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@v2
     - name: Use Node.js
       uses: actions/setup-node@v2
@@ -27,25 +31,20 @@ jobs:
       working-directory: ${{env.workingdir}}
     - run: npm run test
       working-directory: ${{env.workingdir}}
-      
-  acr:
+
+  deploy-acr-appservice:
     runs-on: ubuntu-latest
     needs:
       - test
     steps:
       - uses: actions/checkout@v2
- 
-      - name: Login to ACR
-        uses: docker/login-action@v1
+      - name: Deploy to ACR and App Service
+        uses: ./.github/actions
         with:
-          registry: ${{ secrets.registry }}
-          username: ${{ secrets.service_principal }}
-          password: ${{ secrets.service_principal_password }}
-          
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          push: true
-          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
+         context: ${{ env.context }}
+         repo: ${{ env.repo }}
+         registry: ${{ secrets.registry }}
+         service_principal: ${{ secrets.service_principal }}
+         service_principal_password: ${{ secrets.service_principal_password }}
+         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+         AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}

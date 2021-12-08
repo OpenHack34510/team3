@@ -4,11 +4,15 @@ env:
   workingdir: apis/user-java/
   repo: devopsoh/api-user-java
   context: apis/user-java/
+  AZURE_WEBAPP_NAME: openhack5ba15au8userjava
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    #branches: [ main ]
+    #paths:
+    #  - 'apis/user-java/**'
+    #  - '!apis/user-java/**.md'
 
 jobs:
   test:
@@ -26,29 +30,24 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       working-directory: ${{ env.workingdir }}
-      
+
     - name: Run unit tests with Maven
       run: mvn test
       working-directory: ${{ env.workingdir }}
-      
-  acr:
+
+  deploy-acr-appservice:
     runs-on: ubuntu-latest
     needs:
       - test
     steps:
       - uses: actions/checkout@v2
- 
-      - name: Login to ACR
-        uses: docker/login-action@v1
+      - name: Deploy to ACR and App Service
+        uses: ./.github/actions
         with:
-          registry: ${{ secrets.registry }}
-          username: ${{ secrets.service_principal }}
-          password: ${{ secrets.service_principal_password }}
-          
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          push: true
-          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
+         context: ${{ env.context }}
+         repo: ${{ env.repo }}
+         registry: ${{ secrets.registry }}
+         service_principal: ${{ secrets.service_principal }}
+         service_principal_password: ${{ secrets.service_principal_password }}
+         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+         AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}

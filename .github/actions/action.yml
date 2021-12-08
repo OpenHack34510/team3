@@ -1,0 +1,52 @@
+name: 'deploy-acr-appservice'
+description: 'deploy to acr and to app service'
+inputs:
+  context:  # id of input
+    description: 'context of docker build'
+    required: true
+  repo:  # id of input
+    description: 'ACR repository'
+    required: true
+
+  registry:  # id of input
+    description: 'ACR registry'
+    required: true
+  service_principal:  # id of input
+    description: 'Service Principal with access to ACR'
+    required: true
+  service_principal_password:  # id of input
+    description: 'SP password'
+    required: true
+
+  AZURE_CREDENTIALS:  # id of input
+    description: 'Credentials to connect to azure, with access to app service'
+    required: true
+  AZURE_WEBAPP_NAME:  # id of input
+    description: 'Name of the app service'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Login to ACR
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.service_principal }}
+        password: ${{ inputs.service_principal_password }}
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: ${{ inputs.context }}
+        push: true
+        tags: ${{ inputs.registry }}/${{ inputs.repo }}:${{ github.sha }}
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.AZURE_CREDENTIALS }}
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
+        images: ${{ inputs.registry }}/${{ inputs.repo }}:${{ github.sha }}

@@ -4,11 +4,15 @@ env:
   workingdir: apis/poi/
   repo: devopsoh/api-poi
   context: apis/poi/web
+  AZURE_WEBAPP_NAME: openhack5ba15au8poi
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
+    paths:
+      - 'apis/poi/**'
+      - '!apis/poi/**.md'
 
 jobs:
   test:
@@ -22,30 +26,22 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ${{ env.workingdir}}
-    #- name: Build
-    #  run: dotnet build --no-restore
-    #  working-directory: ${{ env.workingdir}}
     - name: Test
-      run: dotnet test ${{ env.workingdir}}/tests/UnitTests/      
+      run: dotnet test ${{ env.workingdir}}/tests/UnitTests/
 
-  acr:
+  deploy-acr-appservice:
     runs-on: ubuntu-latest
     needs:
       - test
     steps:
       - uses: actions/checkout@v2
- 
-      - name: Login to ACR
-        uses: docker/login-action@v1
+      - name: Deploy to ACR and App Service
+        uses: ./.github/actions
         with:
-          registry: ${{ secrets.registry }}
-          username: ${{ secrets.service_principal }}
-          password: ${{ secrets.service_principal_password }}
-          
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          push: true
-          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
+         context: ${{ env.context }}
+         repo: ${{ env.repo }}
+         registry: ${{ secrets.registry }}
+         service_principal: ${{ secrets.service_principal }}
+         service_principal_password: ${{ secrets.service_principal_password }}
+         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+         AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
