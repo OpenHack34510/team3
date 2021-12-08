@@ -4,7 +4,7 @@ env:
   workingdir: apis/poi/
   repo: devopsoh/api-poi
   context: apis/poi/web
-  AZURE_WEBAPP_NAME: openhack5ba15au8poi-staging
+  AZURE_WEBAPP_NAME: openhack5ba15au8poi/staging
 
 on:
   workflow_dispatch:
