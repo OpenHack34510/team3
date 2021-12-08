@@ -25,7 +25,7 @@ jobs:
     #  run: dotnet build --no-restore
     #  working-directory: ${{ env.workingdir}}
     - name: Test
-      run: dotnet test ${{ env.workingdir}}      
+      run: dotnet test ${{ env.workingdir}}/tests/UnitTests/      
 
   acr:
     runs-on: ubuntu-latest
