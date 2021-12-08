@@ -1,0 +1,54 @@
+name: deploy-user-java
+
+env:
+  workingdir: apis/user-java/
+  repo: devopsoh/api-user-java
+  context: apis/user-java/
+
+on:
+  workflow_dispatch:
+  push:
+    #branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+      working-directory: ${{ env.workingdir }}
+      
+    - name: Run unit tests with Maven
+      run: mvn test
+      working-directory: ${{ env.workingdir }}
+      
+  acr:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - uses: actions/checkout@v2
+ 
+      - name: Login to ACR
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.registry }}
+          username: ${{ secrets.service_principal }}
+          password: ${{ secrets.service_principal_password }}
+          
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ env.context }}
+          push: true
+          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
