@@ -40,6 +40,7 @@ runs:
       with:
         context: ${{ inputs.context }}
         push: true
+        build-args: build_version=${{ github.sha }}
         tags: ${{ inputs.registry }}/${{ inputs.repo }}:${{ github.sha }}
     - name: Azure authentication
       uses: azure/login@v1
