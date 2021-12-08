@@ -4,15 +4,15 @@ env:
   workingdir: apis/userprofile/
   repo: devopsoh/api-userprofile
   context: apis/userprofile/
-  AZURE_WEBAPP_NAME: openhack5ba15au8userprofile/staging
+  AZURE_WEBAPP_NAME: openhack5ba15au8userprofile
 
 on:
   workflow_dispatch:
   push:
-    #branches: [ main ]
-    #paths:
-     # - 'apis/userprofile/**'
-      #- '!apis/userprofile/**.md'
+    branches: [ main ]
+    paths:
+     - 'apis/userprofile/**'
+     - '!apis/userprofile/**.md'
 
 jobs:
   test:
