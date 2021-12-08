@@ -52,9 +52,8 @@ runs:
         app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
         images: ${{ inputs.registry }}/${{ inputs.repo }}:${{ github.sha }}
         slot-name: staging
-
     - name: Verify the deployment status
-       uses: lakuapik/gh-actions-http-status@v1
-       with:
-         sites: '["https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi"]'
-         expected: '[200]'
+      uses: lakuapik/gh-actions-http-status@v1
+      with:
+       sites: '["https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi"]'
+       expected: '[200]'
