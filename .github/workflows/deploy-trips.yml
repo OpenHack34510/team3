@@ -1,0 +1,51 @@
+name: deploy-trips
+
+env:
+  workingdir: apis/trips/
+  repo: devopsoh/api-trips
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - name: download dependencies
+        run: go get
+        working-directory: ${{ env.workingdir }}
+
+      - name: Test
+        run: go test ./tripsgo -run Unit
+        working-directory: ${{ env.workingdir }}
+
+  acr:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - uses: actions/checkout@v2
+ 
+      - name: Login to ACR
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.registry }}
+          username: ${{ secrets.service_principal }}
+          password: ${{ secrets.service_principal_password }}
+          
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ env.workingdir }}
+          push: true
+          tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
