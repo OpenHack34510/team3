@@ -4,6 +4,7 @@ env:
   workingdir: apis/poi/
   repo: devopsoh/api-poi
   context: apis/poi/web
+  AZURE_WEBAPP_NAME: openhack5ba15au8poi
 
 on:
   workflow_dispatch:
@@ -55,10 +56,16 @@ jobs:
   
   build-and-deploy-to-appservice:
     runs-on: ubuntu-latest
-    environment: dev
+    #needs:
+    #  - acr
     steps:
     #- uses: actions/checkout@master
     - name: Azure authentication
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+        images: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
