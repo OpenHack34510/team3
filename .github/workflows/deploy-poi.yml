@@ -3,6 +3,7 @@ name: deploy-poi
 env:
   workingdir: apis/poi/
   repo: devopsoh/api-poi
+  context: ${{ env.workingdir }}/web
 
 on:
   workflow_dispatch:
@@ -45,6 +46,6 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ${{ env.workingdir }}
+          context: ${{ env.context }}
           push: true
           tags: ${{ secrets.registry }}/${{ env.repo }}:${{ github.sha }}
