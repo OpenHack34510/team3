@@ -41,6 +41,8 @@ jobs:
       with:
         projectBaseDir: ${{env.workingdir}}
         args: >
+         -Dsonar.organization=openhack34510
+         -Dsonar.projectKey=387e0838a315f7bd4da5ea0c8893400f778c9497
          -Dsonar.test.exclusions=tests/**
          -Dsonar.tests=tests/
          -Dsonar.verbose=true
