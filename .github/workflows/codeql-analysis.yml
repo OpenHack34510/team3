@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'csharp', 'go', 'java', 'javascript' ]
+        #language: [ 'csharp', 'go', 'java', 'javascript' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://git.io/codeql-language-support
 
@@ -63,9 +63,17 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    #- run: |
+    #- run: |       
     #   make bootstrap
     #   make release
-
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1    
+      run: dotnet restore
+      working-directory: ${{ env.workingdir}}
+    - run: dotnet build
+      working-directory: ${{ env.workingdir}}
+      
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
