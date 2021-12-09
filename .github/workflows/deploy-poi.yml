@@ -49,3 +49,4 @@ jobs:
          AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
          resource_group: ${{ env.resource_group }}
          build_name: ${{ env.build_name }}
+         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
