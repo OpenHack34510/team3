@@ -61,6 +61,7 @@ jobs:
       shell: pwsh
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"OpenHack34510_team3" /o:"openhack34510" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+        dotnet build apis/poi/poi.sln
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   # deploy-acr-appservice:
