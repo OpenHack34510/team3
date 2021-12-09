@@ -37,11 +37,12 @@ jobs:
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      args: >
-       -Dsonar.sources=apis/poi/
-       -Dsonar.test.exclusions=tests/**
-       -Dsonar.tests=tests/
-       -Dsonar.verbose=true
+      with:
+        projectBaseDir: ${{env.workingdir}}
+        args: >
+         -Dsonar.test.exclusions=tests/**
+         -Dsonar.tests=tests/
+         -Dsonar.verbose=true
 
   # deploy-acr-appservice:
   #   runs-on: ubuntu-latest
