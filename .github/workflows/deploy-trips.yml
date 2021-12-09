@@ -5,6 +5,8 @@ env:
   repo: devopsoh/api-trips
   context: apis/trips
   AZURE_WEBAPP_NAME: openhack5ba15au8trips
+  resource_group: openhack5ba15au8rg
+  build_name: deploy-poi
 
 on:
   workflow_dispatch:
@@ -49,3 +51,6 @@ jobs:
          service_principal_password: ${{ secrets.service_principal_password }}
          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
          AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
+         resource_group: ${{ env.resource_group }}
+         build_name: ${{ env.build_name }}
+         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
