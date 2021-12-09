@@ -31,6 +31,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ${{ env.workingdir}}
+    - run: dotnet build .
+      working-directory: ${{ env.workingdir}}
     - name: Test
       run: dotnet test ${{ env.workingdir}}/tests/UnitTests/
     - name: Cache SonarCloud packages
