@@ -13,8 +13,6 @@ namespace poi.Controllers
         [Produces("text/plain", Type = typeof(String))]
         public string GetVersion()
         {
-            if(true) {}
-
             var version = Environment.GetEnvironmentVariable("APP_VERSION");
             return version ?? "default";
         }
