@@ -66,8 +66,6 @@ runs:
       with:
        sites: '["https://openhack5ba15au8poi-staging.azurewebsites.net/api/healthcheck/poi"]'
        expected: '[200]'
-        #if: github.ref == 'refs/heads/main'
-        #runs-on: ubuntu-latest
     - name: Azure authentication
       uses: azure/login@v1
       with:
