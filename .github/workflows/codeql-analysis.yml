@@ -11,6 +11,9 @@
 #
 name: "CodeQL"
 
+env:
+  poiworkingdir: apis/poi/
+
 on:
   workflow_dispatch:
   push:
@@ -71,9 +74,9 @@ jobs:
       with:
         dotnet-version: 3.1
     - run: dotnet restore
-      working-directory: ${{ env.workingdir}}
+      working-directory: ${{ env.poiworkingdir}}
     - run: dotnet build
-      working-directory: ${{ env.workingdir}}
+      working-directory: ${{ env.poiworkingdir}}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
