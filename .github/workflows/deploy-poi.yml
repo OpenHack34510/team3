@@ -12,9 +12,9 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-    paths:
-      - 'apis/poi/**'
-      - '!apis/poi/**.md'
+    #paths:
+    #  - 'apis/poi/**'
+    #  - '!apis/poi/**.md'
 
 jobs:
   test:
