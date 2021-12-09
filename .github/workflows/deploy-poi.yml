@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -30,23 +33,32 @@ jobs:
       working-directory: ${{ env.workingdir}}
     - name: Test
       run: dotnet test ${{ env.workingdir}}/tests/UnitTests/
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      args: >
+       -Dsonar.sources=apis/poi/
+       -Dsonar.test.exclusions=tests/**
+       -Dsonar.tests=tests/
+       -Dsonar.verbose=true
 
-  deploy-acr-appservice:
-    runs-on: ubuntu-latest
-    #needs:
-     # - test
-    steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to ACR and App Service
-        uses: ./.github/actions
-        with:
-         context: ${{ env.context }}
-         repo: ${{ env.repo }}
-         registry: ${{ secrets.registry }}
-         service_principal: ${{ secrets.service_principal }}
-         service_principal_password: ${{ secrets.service_principal_password }}
-         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-         AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
-         resource_group: ${{ env.resource_group }}
-         build_name: ${{ env.build_name }}
-         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  # deploy-acr-appservice:
+  #   runs-on: ubuntu-latest
+  #   #needs:
+  #    # - test
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Deploy to ACR and App Service
+  #       uses: ./.github/actions
+  #       with:
+  #        context: ${{ env.context }}
+  #        repo: ${{ env.repo }}
+  #        registry: ${{ secrets.registry }}
+  #        service_principal: ${{ secrets.service_principal }}
+  #        service_principal_password: ${{ secrets.service_principal_password }}
+  #        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  #        AZURE_WEBAPP_NAME: ${{ env.AZURE_WEBAPP_NAME }}
+  #        resource_group: ${{ env.resource_group }}
+  #        build_name: ${{ env.build_name }}
+  #        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
